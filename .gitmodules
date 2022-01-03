@@ -1,3 +1,6 @@
-[submodule "backend"]
+[submodule "symfony_docker"]
 	path = symfony_docker
 	url = git@github.com:Mugi4ka/symfony_docker.git
+[submodule "vue-docker"]
+	path = vue-docker
+	url = git@github.com:Mugi4ka/vue-docker.git
