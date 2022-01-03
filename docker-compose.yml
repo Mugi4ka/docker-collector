@@ -26,13 +26,13 @@ services:
       - APP_SECRET=${APP_SECRET}
       - DATABASE_URL=${DATABASE_URL}
     volumes:
-      - ./../backend/:/var/www
+      - ./symfony_docker:/var/www
   nginx:
     container_name: nginx
     build:
       context: ./nginx
     volumes:
-      - ./../backend/:/var/www
+      - ./symfony_docker:/var/www
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/sites/:/etc/nginx/sites-available
       - ./nginx/conf.d/:/etc/nginx/conf.d
