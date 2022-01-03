@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: db
+    image: postgres:14
+    restart: always
+    environment:
+#      MYSQL_ROOT_PASSWORD: secret
+      POSTGRES_DB: superdb
+      POSTGRES_USER: roman
+      POSTGRES_PASSWORD: roman
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - '15432:5432'
+    volumes:
+      - ./posgresql:/var/lib/postgresql/data
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./php-fpm
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      - ./../backend/:/var/www
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    volumes:
+      - ./../backend/:/var/www
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites/:/etc/nginx/sites-available
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./logs:/var/log
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+      - "443:443"
